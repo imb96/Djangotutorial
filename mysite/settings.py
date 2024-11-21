@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 # 장고 인스턴스에서 활성화된 모든 장고 앱의 이름이 저장.
 INSTALLED_APPS = [
+    'polls.apps.PollsConfig', # polls 앱 
     'django.contrib.admin', # 관리자 페이지
     'django.contrib.auth', # 인증 시스템
     'django.contrib.contenttypes', # 콘텐츠 유형을 위한 프레임워크

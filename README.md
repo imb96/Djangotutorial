@@ -114,3 +114,23 @@ id       이름      나이       이메일
 2        이영희    22        lee@email.com    ← 행(Row) = 레코드(Record)
 3        박지민    21        park@email.com   ← 행(Row) = 레코드(Record)
 ```
+
+### 모델 활성화
+
+```python
+INSTALLED_APPS = [
+    "polls.apps.PollsConfig", # 앱 추가
+    #...
+]
+```
+
+### DB 마이그레이션 파일 생성
+
+```bash
+python manage.py makemigrations polls
+```
+
+- makemigrations를 실행하면 Django에 모델을 변경했다는 사실과 변경 사항을 마이그레이션으로 저장하고 싶다는 사실을 알리는 것.
+- 마이그레이션은 장고가 모델(데이터베이스 스키마)에 대한 변경사항을 저장하는 방식으로, 디스크 파일에 저장됨.
+- polls/migrations/0001_initial.py 파일에서 읽을 수 있음.
+- 마이그레이션을 실행하고 데이터베이스 스키마를 자동으로 관리하는 명령이 마이그레이트라고 함.
