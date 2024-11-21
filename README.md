@@ -265,3 +265,37 @@ def __str__(self):          # ✅ 정상 동작!
 
 - 클래스의 인스턴스(객체) 자기 자신을 가리킴
 - 메서드가 호출될 때 자동으로 첫 번째 인수로 전달됨
+
+### Django Admin
+
+Django 관리자 페이지에 접근할 수 있는 최고 권한 사용자 만들기
+
+```bash
+python3 manage.py createsuperuser
+```
+
+superuser
+
+- Django 관리자 페이지(/admin) 접속
+- 모든 데이터베이스 내용 조회/수정/삭제
+- 다른 사용자 계정 관리
+- 모든 권한 사용 가능
+
+접속주소
+`http://127.0.0.1:8000/admin`
+
+### Django Admin 페이지에 모델 등록
+
+```python
+# polls/admin.py
+from django.contrib import admin
+from .models import Question
+admin.site.register(Question)
+```
+
+관리자 페이지(/admin)에서:
+
+- Question 모델을 볼 수 있음
+- 새로운 Question 추가 가능
+- 기존 Question 수정/삭제 가능
+- Question 목록 확인 가능
