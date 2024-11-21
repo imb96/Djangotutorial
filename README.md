@@ -225,3 +225,43 @@ python3 manage.py migrate
 1. 모델 변경(models.py)
 2. `python manage.py makemigrations`를 실행하여 해당 변경 사항에 대한 마이그레이션을 생성.
 3. `python manage.py migrate`를 실행하여 해당 변경 사항을 데이터베이스에 적용,
+
+### Django 환경이 설정된 파이썬 대화형 쉘
+
+```bash
+python manage.py shell
+```
+
+일반 `python` 실행과 다른점
+
+- Django 프로젝트의 모든 설정이 로드된 상태로 시작
+- 모델을 직접 import해서 사용 가능
+- 데이터베이스 쿼리 테스트 가능
+- API 테스트 가능
+
+### Python 특별 메서드
+
+```python
+class MyClass:
+    def __init__(self):      # 생성자
+    def __str__(self):       # 문자열 표현
+    def __len__(self):       # 길이 반환
+    def __repr__(self):      # 개발자를 위한 문자열 표현
+    def __add__(self):       # + 연산자 동작 정의
+```
+
+```python
+def show_text(self):         # ❌ 파이썬이 특별 메서드로 인식 못함
+    return self.question_text
+
+def my_str(self):           # ❌ 역시 특별 메서드로 인식 못함
+    return self.question_text
+
+def __str__(self):          # ✅ 정상 동작!
+    return self.question_text
+```
+
+**self**
+
+- 클래스의 인스턴스(객체) 자기 자신을 가리킴
+- 메서드가 호출될 때 자동으로 첫 번째 인수로 전달됨
