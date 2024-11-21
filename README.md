@@ -134,3 +134,38 @@ python manage.py makemigrations polls
 - 마이그레이션은 장고가 모델(데이터베이스 스키마)에 대한 변경사항을 저장하는 방식으로, 디스크 파일에 저장됨.
 - polls/migrations/0001_initial.py 파일에서 읽을 수 있음.
 - 마이그레이션을 실행하고 데이터베이스 스키마를 자동으로 관리하는 명령이 마이그레이트라고 함.
+
+### SQL 반환 (읽기 전용)
+
+sqlmigrate 명령은 마이그레이션 이름을 가져와서 해당 SQL을 반환함.
+
+```bash
+python manage.py sqlmigrate polls 0001
+```
+
+결과
+
+```bash
+BEGIN;
+--
+-- Create model Question
+--
+CREATE TABLE "polls_question" (
+  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "question_text" varchar(200) NOT NULL,
+  "pub_date" datetime NOT NULL
+);
+--
+-- Create model Choice
+--
+CREATE TABLE "polls_choice" (
+  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "choice_text" varchar(200) NOT NULL,
+  "votes" integer NOT NULL,
+  "question_id" bigint NOT NULL REFERENCES
+  "polls_question" ("id") DEFERRABLE INITIALLY DEFERRED
+);
+CREATE INDEX "polls_choice_question_id_c5b4b260" ON
+  "polls_choice" ("question_id");
+COMMIT;
+```
