@@ -151,21 +151,77 @@ BEGIN;
 -- Create model Question
 --
 CREATE TABLE "polls_question" (
-  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "question_text" varchar(200) NOT NULL,
-  "pub_date" datetime NOT NULL
+  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, # 자동 증가하는 기본 키
+  "question_text" varchar(200) NOT NULL, # 질문 내용(200자 제한)
+  "pub_date" datetime NOT NULL # 게시 날짜
 );
 --
 -- Create model Choice
 --
 CREATE TABLE "polls_choice" (
-  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "choice_text" varchar(200) NOT NULL,
-  "votes" integer NOT NULL,
-  "question_id" bigint NOT NULL REFERENCES
-  "polls_question" ("id") DEFERRABLE INITIALLY DEFERRED
+  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, # 자동 증가하는 기본 키
+  "choice_text" varchar(200) NOT NULL, # 선택지 내용(200자 제한)
+  "votes" integer NOT NULL, # 투표 수
+  "question_id" bigint NOT NULL REFERENCES # Question 테이블과의 연결 고리
+  "polls_question" ("id") DEFERRABLE INITIALLY DEFERRED # 외래 키 제약조건의 검사 시점을 설정.
+  # DEFERRABLE: 제약조건 검사를 나중으로 미룰 수 있다는 의미
+  # INITIALLY DEFERRED: 트랜잭션 끝에서 제약조건을 검사한다는 의미
 );
-CREATE INDEX "polls_choice_question_id_c5b4b260" ON
+CREATE INDEX "polls_choice_question_id_c5b4b260" ON # question_id 컬럼에 대한 인덱스를 생성하는 명령
   "polls_choice" ("question_id");
 COMMIT;
 ```
+
+** Note the following **
+
+- 정확한 출력은 DB 마다 다름.
+- 테이블명은 앱 이름(polls)와 모델의 소문자 이름(question, choice)와 결합하여 자동생성됨. (재정의 가능)
+- 기본키(Primary keys) ID가 자동으로 추가됨. (재정의 가능)
+- 컨벤션에 따라, Django가 외래 키 필드 이름에 `_id`를 추가함. (재정의 가능)
+- 외래 키 관계는 FOREIGN KEY 제약 조건으로 명시적으로 만들어짐.
+- DEFERRABLE 부분은 SQL에 트랜잭션이 끝날 때까지 외래키를 적용하지 않는다는 의미.
+
+### 프로젝트 검사
+
+```bash
+python3 manage.py check
+```
+
+### 실제 DB 변경
+
+```bash
+python3 manage.py migrate
+```
+
+1. 하는 일
+
+- 마이그레이션 파일의 내용을 실제 데이터베이스에 적용해요
+- 테이블 생성, 수정, 삭제 등을 실행해요
+- 데이터베이스 스키마를 변경해요
+
+2. 실행 시점
+
+- 새로운 마이그레이션 파일을 만든 후
+- 프로젝트를 처음 설정할 때
+- 다른 개발자의 마이그레이션을 받았을 때
+
+3. 주요 동작 순서
+
+- 1. 아직 적용되지 않은 마이그레이션 파일을 확인
+- 2. 순서대로 마이그레이션 실행
+- 3. 데이터베이스에 변경사항 적용
+- 4. 마이그레이션 기록 업데이트
+
+4. 주의사항
+
+- 실행 전에 makemigrations가 필요함.
+- 데이터베이스를 직접 변경하므로 신중히 실행해야 함.
+- 가능하면 백업 후 실행하는 것이 좋음.
+- makemigrations가 설계도를 그리는 거라면
+  migrate는 실제로 건물을 짓는 것과 같다.
+
+**모델 변경을 위한 3단계 가이드**
+
+1. 모델 변경(models.py)
+2. `python manage.py makemigrations`를 실행하여 해당 변경 사항에 대한 마이그레이션을 생성.
+3. `python manage.py migrate`를 실행하여 해당 변경 사항을 데이터베이스에 적용,
