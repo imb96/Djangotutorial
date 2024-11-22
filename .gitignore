@@ -1,0 +1,26 @@
+# Python 캐시 파일
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django 관련
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# 가상환경
+venv/
+env/
+.env/
+
+# IDE 관련
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 시스템 파일
+.DS_Store  # Mac
+Thumbs.db  # Windows
