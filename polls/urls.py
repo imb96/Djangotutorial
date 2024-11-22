@@ -5,6 +5,8 @@ from django.urls import path
 from . import views
 
 # URL 패턴 정의하는 목록
+
+app_name="polls"
 urlpatterns = [
     # path(URL 경로, 뷰 함수, URL이름)
 
