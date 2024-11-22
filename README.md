@@ -392,3 +392,11 @@ tldr;
 - Model에서 데이터를 가져오고
 - Template으로 HTML을 만들거나 JSON 응답을 보내고
 - 프론트엔드의 View(화면)에 표시됨
+
+### Template
+
+- 앱 디렉토리(polls)에 `templates` 디렉토리를 만든다.
+- Django는 이 디렉토리에서 템플릿을 찾는다.
+- 프로젝트의 TEMPLATES 설정은 Django가 템플릿을 로드하고 렌더링하는 방법을 설명한다.
+- 기본 설정 파일은 APP_DIRS 옵션이 True로 설정된 DjangoTemplates 백엔드를 구성한다.
+- DjangoTemplates는 각 INSTALLED_APPS에서 "templates" 하위 디렉토리를 찾는다.
