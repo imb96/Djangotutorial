@@ -299,3 +299,96 @@ admin.site.register(Question)
 - 새로운 Question 추가 가능
 - 기존 Question 수정/삭제 가능
 - Question 목록 확인 가능
+
+### View
+
+Django에서 웹 페이지 및 기타 콘텐츠는 뷰를 통해 전달됨.
+각 뷰는 Python 함수(또는 클래스 기반 뷰의 경우 메서드)로 표현된다.
+장고는 요청된 URL(정확히 말하면 도메인 이름 뒤의 URL 부분)을 검사하여 보기를 선택한다.
+
+### Frontend MVC vs Django MTV
+
+Django에서 View라는 것을 보니 프론트엔드 관점에서 보면 실제로 화면에 나타나는 건가? 라고 생각이 드는데, 프론트엔드와 백엔드에서 'view'의 의미가 조금 다르다.
+이를 프론트엔드(React)의 MVC와 Django의 MTV를 비교해보자.
+
+**1. Model(모델)**
+
+- React: 데이터를 관리하는 상태 관리 도구
+
+```jsx
+// Redux store나 React의 state 같은 것
+const [questions, setQuestions] = useState([{ id: 1, text: "좋아하는 색은?" }]);
+```
+
+- Django: 데이터베이스를 관리하는 부분
+
+```python
+# Django의 models.py
+class Question(models.Model):
+  question_text = models.CharField(max_length=200)
+  pub_date = models.DateTimeField()
+```
+
+**2. View/Template(화면)**
+
+- React: 실제 사용자에게 보이는 UI 컴포넌트
+
+```jsx
+// React 컴포넌트
+function QuestionList() {
+  return (
+    <div>
+      <h1>질문 목록</h1>
+      {questions.map((q) => (
+        <QuestionItem question={q} />
+      ))}
+    </div>
+  );
+}
+```
+
+- Django: HTML 템플릿(Django의 Template)
+
+```python
+# Django의 template.html
+  <h1>질문 목록</h1>
+  {% for question in questions %}
+    <div>{{ question.text }}</div>
+  {% endfor %}
+```
+
+**3. Controller/View (로직)**
+
+- React: API 호출하고 데이터 처리하는 로직
+
+```jsx
+// API 호출 함수
+async function getQuestions() {
+  const response = await fetch("/api/questions/");
+  const data = await response.json();
+  setQuestions(data);
+}
+```
+
+- Django: API 요청을 받아서 처리하는 로직 (Django의 View)
+
+```python
+# Django의 views.py
+def question_list(request):
+  questions=Question.objects.all()
+  return JsonResponse(list(questions))
+```
+
+tldr;
+
+- Model: 데이터 관리 (둘 다 비슷)
+- View/Template: 화면에 보이는 부분
+- Controller/View: 데이터 처리 로직
+
+실제 동작 흐름
+
+- 프론트엔드에서 API 요청을 보내면
+- Django의 View(Controller)가 요청을 받아서
+- Model에서 데이터를 가져오고
+- Template으로 HTML을 만들거나 JSON 응답을 보내고
+- 프론트엔드의 View(화면)에 표시됨
